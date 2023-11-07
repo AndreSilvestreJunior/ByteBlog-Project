@@ -1,0 +1,54 @@
+<div class="absolute top-2 right-2">
+  @set('color', {
+    bg: {
+      green: 'bg-green-100',
+      red: 'bg-red-100',
+      indigo: 'bg-indigo-100',
+      yellow: 'bg-yellow-100'
+    },
+    hover: {
+      green: 'hover:bg-green-200',
+      red: 'hover:bg-red-200',
+      indigo: 'hover:bg-indigo-200',
+      yellow: 'hover:bg-yellow-200'
+    },
+    text500: {
+      green: 'text-green-500',
+      red: 'text-red-500',
+      indigo: 'text-indigo-500',
+      yellow: 'text-yellow-500'
+    },
+    text800: {
+      green: 'text-green-800',
+      red: 'text-red-800',
+      indigo: 'text-indigo-800',
+      yellow: 'text-yellow-800'
+    },
+    title: {
+      success: 'Sucesso',
+      error: 'Erro',
+      warn: 'Alerta',
+      info: 'Informação'
+    }
+  })
+  @set('notification', flashMessages.get('notification'))
+  @if(notification)
+  <div id="alert" data-timeout={{ notification.time }}
+    class="shadow-sm max-w-4xl min-w-[16rem] animate-slideIn px-4 py-3 rounded-md {{ color.bg[notification.color] }}">
+    <div class="flex items-start">
+      <i class="bi bi-{{ notification.icon }}-circle-fill flex items-start pt-[2px] text-xl {{ color.text500[notification.color] }}"></i>
+      <div class="ml-3">
+        <p class="text-sm font-medium {{{ color.text800[notification.color] }}}">{{ color.title[notification.type] }}</p>
+        <p class="text-sm {{{ color.text800[notification.color] }}}">{{ notification.message }}</p>
+      </div>
+      <div class="ml-auto pl-3">
+        <button id="close-button" class="{{ color.hover[notification.color] }} cursor-pointer rounded-md px-1.5">
+          <i class="bi bi-x font-black {{ color.text500[notification.color] }} text-lg font-bold"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  @end
+</div>
+
+<script src={{ asset('assets/toast.js') }}></script>

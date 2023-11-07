@@ -1,0 +1,55 @@
+@layout('layouts/main')
+@set('title', 'Minhas Postagens')
+@set('modal', false)
+
+@section('body')
+  <div class="bg-white pb-24 sm:pb-32">
+    @include('partials/header')
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 mt-36">
+      <div class="flex items-end justify-between">
+        <div class="mx-auto max-w-2xl lg:mx-0">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Minhas Postagens</h2>
+          <p class="mt-2 text-lg leading-8 text-gray-600">Lista Completa de Todas as Postagens Realizadas pelo Usuário.</p>
+        </div>
+        <div>
+          <button class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Nova Postagem
+          </button>
+        </div>
+      </div>
+      <div
+        class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        @if(posts)
+          @each(post in posts)
+            @!post({ id: post.id })
+          @end
+        @else
+          <p>Nenhuma postagem encontrada.</p>
+        @end
+      </div>
+    </div>
+  </div>
+  @if(modal)
+    @modal()
+      @slot('header')
+          Criar Nova Postagem
+      @end
+
+      @slot('main')
+        <form class="w-full" action="">
+          <div>
+            @!input({ type: 'text', id: 'title', name: 'title', label: 'Título', requiindigo: true })
+          </div>
+          <div>
+            @!input({ type: 'text', id: 'content', name: 'content', label: 'Conteúdo', requiindigo: true })
+          </div>
+        </form>
+      @end
+
+      @slot('actions')
+        <button type="button" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:mr-3 sm:w-auto">Criar</button>
+        <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancelar</button>
+      @end
+    @end
+  @end
+@end

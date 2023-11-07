@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html class="h-full bg-white">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    @entryPointStyles('app')
+    @entryPointScripts('app')
+  </head>
+  <body class="h-full">
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    </nav>
+
+    @!section('body')
+
+    @!toast()
+    <footer class="footer">
+    </footer>
+  </body>
+</html>
