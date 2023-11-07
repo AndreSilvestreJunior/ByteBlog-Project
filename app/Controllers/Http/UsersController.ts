@@ -1,8 +1,11 @@
+import ToastService from 'App/Services/ToastService'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import CreateUserValidator from 'App/Validators/CreateUserValidator'
 
 export default class UsersController {
+  private toastService = new ToastService()
+
   public async index({ params, view }: HttpContextContract) {
     const user = await User.findOrFail(params.id)
 
@@ -13,12 +16,12 @@ export default class UsersController {
     return view.render('register')
   }
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, response, session }: HttpContextContract) {
     const payload = await request.validate(CreateUserValidator)
 
     await User.create(payload)
-
-    return response.redirect().toRoute('welcome')
+    this.toastService.success(session, 'Conta criada, favor efetuar login!', 4000)
+    return response.redirect().toRoute('login.show')
   }
 
   public async show({}: HttpContextContract) {}

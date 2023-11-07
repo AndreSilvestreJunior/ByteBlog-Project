@@ -35,7 +35,7 @@ export default class AuthController {
       return response.redirect().back()
     }
 
-    this.toastService.success(session, 'Login efetuado com sucesso!', 4000)
+    this.toastService.success(session, 'Login efetuado!', 4000)
     return response.redirect().toRoute('welcome')
   }
 

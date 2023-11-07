@@ -1,4 +1,4 @@
-<div class="absolute top-2 right-2">
+<div class="absolute top-0 right-0 overflow-hidden z-50">
   @set('color', {
     bg: {
       green: 'bg-green-100',
@@ -34,7 +34,7 @@
   @set('notification', flashMessages.get('notification'))
   @if(notification)
   <div id="alert" data-timeout={{ notification.time }}
-    class="shadow-sm max-w-4xl min-w-[16rem] animate-slideIn px-4 py-3 rounded-md {{ color.bg[notification.color] }}">
+    class="shadow-sm m-2 max-w-4xl min-w-[16rem] animate-slideIn px-4 py-3 rounded-md {{ color.bg[notification.color] }}">
     <div class="flex items-start">
       <i class="bi bi-{{ notification.icon }}-circle-fill flex items-start pt-[2px] text-xl {{ color.text500[notification.color] }}"></i>
       <div class="ml-3">
