@@ -1,11 +1,17 @@
 <article class="flex flex-col items-start justify-between">
   <div class="w-full relative">
-    <img src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=3270&amp;q=80" alt="" class="w-full aspect-video lg:aspect-[3/2] sm:aspect-[2] object-cover bg-gray-100 rounded-2xl ">
+    <img
+      src="https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=3270&amp;q=80"
+      alt="" class="w-full aspect-video lg:aspect-[3/2] sm:aspect-[2] object-cover bg-gray-100 rounded-2xl ">
     <div class="ring rounded-2xl inset-0 absolute ring-inset ring-[#1118271a]"></div>
   </div>
   <div class="max-w-2xl">
     <div class="flex items-center gap-x-4 text-xs mt-8">
-      <time datetime="2020-03-16" class="text-gray-500">Mar 16, 2020</time>
+      <time class="text-gray-500">{{ new Date(post.createdAt).toLocaleDateString("pt-BR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        }) }}</time>
       <a href="#"
         class="relative rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">Marketing</a>
     </div>
@@ -13,12 +19,10 @@
       <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
         <a href="#">
           <span class="absolute inset-0"></span>
-          Boost your conversion rate
+          {{ post.title }}
         </a>
       </h3>
-      <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">Illo sint voluptas. Error voluptates culpa
-        eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat
-        consectetur nulla deserunt vel. Iusto corrupti dicta.</p>
+      <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{{ post.content }}</p>
     </div>
     <div class="w-full flex items-end justify-between mt-8">
       <div class="relative mt-8 flex items-center gap-x-4">
@@ -29,7 +33,7 @@
           <p class="font-semibold text-gray-900">
             <a href="#">
               <span class="absolute inset-0"></span>
-              Michael Foster
+              {{ post.creatorUser.name }} {{ post.creatorUser.lastName }}
             </a>
           </p>
           <p class="text-gray-600">Co-Founder / CTO</p>
@@ -37,11 +41,15 @@
       </div>
 
       <div class="mr-5 flex items-center">
-        <i id="heart-{{id}}" onclick="teste('heart-{{id}}')" onmouseenter="changeIconOnHover(true, 'heart', {{id}})" onmouseleave="changeIconOnHover(false, 'heart', {{id}})"
+        <i id="heart-{{ post.id }}" onclick="teste('heart-{{ post.id }}')"
+          onmouseenter="changeIconOnHover(true, 'heart', {{ post.id }})"
+          onmouseleave="changeIconOnHover(false, 'heart', {{ post.id }})"
           class="position relative top-[.08rem] bi bi-heart ml-1 hover:text-red-500 cursor-pointer"></i>
-        <i id="chat-{{id}}" onclick="teste('chat-{{id}}')" onmouseenter="changeIconOnHover(true, 'chat', {{id}})" onmouseleave="changeIconOnHover(false, 'chat', {{id}})"
+        <i id="chat-{{ post.id }}" onclick="teste('chat-{{ post.id }}')" onmouseenter="changeIconOnHover(true, 'chat', {{ post.id }})"
+          onmouseleave="changeIconOnHover(false, 'chat', {{ post.id }})"
           class="bi bi-chat ml-1 hover:text-indigo-500 cursor-pointer"></i>
-        <i id="star-{{id}}" onclick="teste('star-{{id}}')" onmouseenter="changeIconOnHover(true, 'star', {{id}})" onmouseleave="changeIconOnHover(false, 'star', {{id}})"
+        <i id="star-{{ post.id }}" onclick="teste('star-{{ post.id }}')" onmouseenter="changeIconOnHover(true, 'star', {{ post.id }})"
+          onmouseleave="changeIconOnHover(false, 'star', {{ post.id }})"
           class="bi bi-star ml-1 hover:text-yellow-400 cursor-pointer"></i>
       </div>
     </div>

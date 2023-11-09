@@ -16,13 +16,18 @@
       </button>
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
-      <a href="{{ route('posts.show') }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Minhas Postagens</a>
+      <a href="{{ route('posts.myShow', { id: auth.user.id }) }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Minhas Postagens</a>
       <a href="#" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Favoritos</a>
       <a href="#" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Perfil</a>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-      <a href="{{ route('login.show') }}" class="text-sm font-semibold leading-6 text-gray-900">Login <span
+      @if(auth.isAutenticated)
+        <a href="{{ route('login.show') }}" class="text-sm font-semibold leading-6 text-gray-900">Login <span
+            aria-hidden="true">&rarr;</span></a>
+      @else
+        <a href="{{ route('login.logout') }}" class="text-sm font-semibold leading-6 text-gray-900">Logout <span
           aria-hidden="true">&rarr;</span></a>
+      @end
     </div>
   </nav>
   <!-- Mobile menu, show/hide based on menu open state. -->

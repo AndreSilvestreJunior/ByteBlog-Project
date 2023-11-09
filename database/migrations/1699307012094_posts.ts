@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.string('title')
       table.text('content')
       table.string('img_path')
-      table.integer('creator_user').unsigned().references('users.id').onDelete('CASCADE')
+      table.integer('creator_user_id').unsigned().references('users.id').onDelete('CASCADE')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
