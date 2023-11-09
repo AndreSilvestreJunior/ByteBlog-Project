@@ -31,7 +31,7 @@
         </span>
         <div class="text-sm leading-6">
           <p class="font-semibold text-gray-900">
-            <a href="#">
+            <a href="{{ route('users.index', { id: post.creatorUserId }) }}">
               <span class="absolute inset-0"></span>
               {{ post.creatorUser.name }} {{ post.creatorUser.lastName }}
             </a>
