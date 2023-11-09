@@ -27,22 +27,24 @@ Route.get('/', async ({ view }) => {
   .middleware('auth')
 
 Route.group(() => {
-  Route.get('/', 'AuthController.view').as('show')
+  Route.get('/', 'AuthController.show').as('show')
   Route.get('/logout', 'AuthController.logout').as('logout')
-  Route.post('/', 'AuthController.auth').as('auth')
+  Route.post('/', 'AuthController.login').as('login')
 })
   .prefix('login')
   .as('login')
 
 Route.group(() => {
   Route.get('/new', 'UsersController.create').as('create')
+  Route.get('/:id', 'UsersController.index').as('index').middleware('auth')
   Route.post('/', 'UsersController.store').as('store')
 })
   .prefix('/users')
   .as('users')
-
 Route.group(() => {
   Route.get('/', 'PostsController.show').as('show')
+  Route.get('/favorite', 'PostsController.favorite').as('favorite')
+  Route.get('/:id', 'PostsController.index').as('index')
   Route.get('/my_posts/:id', 'PostsController.show').as('myShow')
   Route.post('/', 'PostsController.store').as('store')
 })

@@ -1,0 +1,25 @@
+@layout('layouts/main')
+@set('title', 'Favoritos')
+
+@section('body')
+  <div x-data="modal" class="bg-white pb-24 sm:pb-32">
+    @include('partials/header')
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 mt-36">
+      <div class="flex items-end justify-between">
+        <div class="mx-auto max-w-2xl lg:mx-0">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Meus Favoritos</h2>
+          <p class="mt-2 text-lg leading-8 text-gray-600">Lista Completa de Todas as Postagens Favoritadas pelo Usuário.</p>
+        </div>
+      </div>
+      <div
+        class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        @if(posts.length > 0)
+          @each(post in posts)
+            @!post({ post: post })
+          @end
+        @else
+          <p>Nenhuma postagem favoritada encontrada.</p>
+        @end
+      </div>
+    </div>
+@end

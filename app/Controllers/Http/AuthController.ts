@@ -5,13 +5,15 @@ import User from 'App/Models/User'
 import ToastService from 'App/Services/ToastService'
 
 export default class AuthController {
-  private toastService = new ToastService()
-
-  public async view({ view }) {
-    return view.render('login')
+  constructor(private toastService: ToastService) {
+    this.toastService = new ToastService()
   }
 
-  public async auth({ request, response, session, auth }: HttpContextContract) {
+  public async show({ view }) {
+    return view.render('pages/auth/login')
+  }
+
+  public async login({ request, response, session, auth }: HttpContextContract) {
     const authSchema = schema.create({
       email: schema.string({ trim: true }, [rules.email()]),
       password: schema.string({ trim: true }, [rules.minLength(8)]),

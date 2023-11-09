@@ -1,0 +1,12 @@
+@layout('layouts/main')
+@set('title', 'Postagem')
+
+@section('body')
+  @include('partials/header')
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 mt-36">
+      <div>
+        <p class="text-lg font-semibold">{{ post.title }}</p>
+        <p>{{ post.content }}</p>
+      </div>
+    </div>
+@end

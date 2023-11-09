@@ -4,16 +4,18 @@ import User from 'App/Models/User'
 import CreateUserValidator from 'App/Validators/CreateUserValidator'
 
 export default class UsersController {
-  private toastService = new ToastService()
+  constructor(private toastService: ToastService) {
+    this.toastService = new ToastService()
+  }
 
   public async index({ params, view }: HttpContextContract) {
     const user = await User.findOrFail(params.id)
 
-    return view.render('', user)
+    return view.render('pages/users/index', { user })
   }
 
   public async create({ view }: HttpContextContract) {
-    return view.render('register')
+    return view.render('pages/users/create')
   }
 
   public async store({ request, response, session }: HttpContextContract) {

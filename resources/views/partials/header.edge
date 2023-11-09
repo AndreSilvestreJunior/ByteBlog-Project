@@ -17,8 +17,8 @@
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
       <a href="{{ route('posts.myShow', { id: auth.user.id }) }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Minhas Postagens</a>
-      <a href="#" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Favoritos</a>
-      <a href="#" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Perfil</a>
+      <a href="{{ route('posts.favorite') }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Favoritos</a>
+      <a href="{{ route('users.index', { id: auth.user.id }) }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Perfil</a>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
       @if(auth.isAutenticated)

@@ -2,13 +2,25 @@ import ToastService from 'App/Services/ToastService'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Post from 'App/Models/Post'
 import CreatePostValidator from 'App/Validators/CreatePostValidator'
+import Favorite from 'App/Models/Favorite'
 
 export default class PostsController {
   constructor(private toastService: ToastService) {
     this.toastService = new ToastService()
   }
 
-  public async index({}: HttpContextContract) {}
+  public async index({ view, params }: HttpContextContract) {
+    const post = await Post.findOrFail(params.id)
+
+    return view.render('pages/posts/index', { post })
+  }
+
+  public async favorite({ view, auth }: HttpContextContract) {
+    if (auth.user?.id) {
+      const posts = await Favorite.query().where('userId', auth.user.id).preload('posts')
+      return view.render('pages/posts/favorite', { posts })
+    }
+  }
 
   public async create({}: HttpContextContract) {}
 
@@ -32,7 +44,7 @@ export default class PostsController {
       posts = await Post.query().where('creatorUserId', params.id).preload('creatorUser')
     else posts = await Post.query().preload('creatorUser')
 
-    return view.render('my_posts', { posts })
+    return view.render('pages/posts/myShow', { posts })
   }
 
   public async edit({}: HttpContextContract) {}
