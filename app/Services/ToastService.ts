@@ -14,7 +14,7 @@ export default class ToastService {
   }
 
   public info(session: SessionContract, message: string, time: number) {
-    this.showToast(session, 'info', message, time, 'info', 'indigo')
+    this.showToast(session, 'info', message, time, 'info', 'blue')
   }
 
   private showToast(

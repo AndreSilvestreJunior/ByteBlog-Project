@@ -1,5 +1,5 @@
-<header class="fixed bg-white shadow-sm inset-x-0 top-0 z-10">
-  <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+<header class="fixed bg-white/50 backdrop-blur border-slate-900/10 supports-backdrop-blur:bg-white/95 border-b inset-x-0 top-0 z-10 dark:border-slate-300/10 dark:bg-slate-900/60">
+  <nav class="flex items-center justify-between p-4 lg:px-8" aria-label="Global">
     <div class="flex lg:flex-1">
       <a href="{{ route('welcome') }}" class="-m-1.5 p-1.5">
         <span class="sr-only">BityBlog</span>
@@ -16,30 +16,61 @@
       </button>
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
-      <a href="{{ route('posts.myShow', { id: auth.user.id }) }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Minhas Postagens</a>
-      <a href="{{ route('posts.favorite') }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Favoritos</a>
-      <a href="{{ route('users.index', { id: auth.user.id }) }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-500">Perfil</a>
+      @if(auth.isAuthenticated)
+      <a href="{{ route('posts.myShow', { id: auth.user.id }) }}"
+        class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-200 dark:hover:text-blue-500 hover:text-blue-500">Minhas Postagens</a>
+      <a href="{{ route('posts.favorite') }}"
+        class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-200 dark:hover:text-blue-500 hover:text-blue-500">Favoritos</a>
+      <a href="{{ route('users.index', { id: auth.user.id }) }}"
+        class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-200 dark:hover:text-blue-500 hover:text-blue-500">Perfil</a>
+      @end
     </div>
-    <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-      @if(auth.isAutenticated)
-        <a href="{{ route('login.show') }}" class="text-sm font-semibold leading-6 text-gray-900">Login <span
-            aria-hidden="true">&rarr;</span></a>
+    <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-4" x-data="dropdown">
+      @if(auth.isAuthenticated)
+      <div class="relative inline-block text-left border-l dark:border-white/5 px-8">
+        <button @click="toggle" class="text-blue-500">
+          <i x-show="!theme" class="bi bi-sun text-xl"></i>
+          <i x-show="theme" class="bi bi-moon-stars text-xl"></i>
+        </button>
+        <div
+          x-show="open"
+          @click.outside="disable"
+          x-cloak
+          x-transition:enter="transition ease-out duration-100"
+          x-transition:enter-start="opacity-0 scale-95"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-75"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-95"
+          class="absolute right-0 z-10 mt-2 py-1 w-36 origin-top-right rounded-md bg-white dark:bg-slate-800 shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div class="py-1" role="none">
+            <button @click="toggle(); disableDark();" class="flex dark:text-slate-200 items-center w-full dark:hover:bg-slate-900 text-blue-500 hover:bg-slate-50 font-semibold px-3 py-1 text-sm">
+              <i class="bi bi-sun text-xl mr-3"></i>
+              Light
+            </button>
+            <button @click="toggle(); activeDark();" class="flex items-center w-full hover:bg-slate-50 font-semibold dark:hover:bg-slate-900 dark:text-blue-500 text-gray-700 px-3 py-1 text-sm">
+              <i class="bi bi-moon-stars text-xl mr-3"></i>
+              Dark
+            </button>
+          </div>
+        </div>
+      </div>
+      <a href="{{ route('login.logout') }}" class="text-sm font-semibold leading-6 dark:text-slate-200 dark:hover:text-blue-500 hover:text-blue-500 text-gray-900">Logout <span
+          aria-hidden="true">&rarr;</span></a>
       @else
-        <a href="{{ route('login.logout') }}" class="text-sm font-semibold leading-6 text-gray-900">Logout <span
+      <a href="{{ route('login.show') }}" class="text-sm font-semibold leading-6 dark:text-slate-200 dark:hover:text-blue-500 hover:text-blue-500 text-gray-900">Login <span
           aria-hidden="true">&rarr;</span></a>
       @end
     </div>
   </nav>
-  <!-- Mobile menu, show/hide based on menu open state. -->
   <div class="hidden lg:hidden" role="dialog" aria-modal="true">
-    <!-- Background backdrop, show/hide based on slide-over state. -->
     <div class="fixed inset-0 z-50"></div>
     <div
       class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
       <div class="flex items-center justify-between">
         <a href="#" class="-m-1.5 p-1.5">
           <span class="sr-only">Your Company</span>
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
+          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=600" alt="">
         </a>
         <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
           <span class="sr-only">Close menu</span>
@@ -53,7 +84,8 @@
         <div class="-my-6 divide-y divide-gray-500/10">
           <div class="space-y-2 py-6">
             <a href="#"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Minhas Postagens</a>
+              class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Minhas
+              Postagens</a>
             <a href="#"
               class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Favoritos</a>
             <a href="#"

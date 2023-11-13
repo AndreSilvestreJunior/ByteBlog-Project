@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full bg-white">
+<html x-data="theme" :class="theme ? 'dark': ''" x-cloak class="h-full">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,14 +7,13 @@
     @entryPointStyles('app')
     @entryPointScripts('app')
   </head>
-  <body class="h-full">
+  <body class="bg-white dark:bg-slate-900">
     <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
     </nav>
 
     @!section('body')
 
     @!toast()
-    <footer class="footer">
-    </footer>
+    @include('partials/footer')
   </body>
 </html>

@@ -12,6 +12,8 @@ export default class PostsController {
   public async index({ view, params }: HttpContextContract) {
     const post = await Post.findOrFail(params.id)
 
+    await post.load('creatorUser')
+
     return view.render('pages/posts/index', { post })
   }
 

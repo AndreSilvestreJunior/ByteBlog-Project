@@ -24,7 +24,7 @@ Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
   .as('welcome')
-  .middleware('auth')
+  .middleware('silentAuth')
 
 Route.group(() => {
   Route.get('/', 'AuthController.show').as('show')

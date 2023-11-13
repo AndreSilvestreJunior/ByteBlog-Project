@@ -1,5 +1,5 @@
 <button
-  class="flex justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm  {{ primary || primary == undefined ? 'bg-indigo-600 text-white hover:bg-indigo-500' : 'bg-white ring-1 ring-inset ring-gray-300 text-gray-900 hover:bg-gray-50'}} {{ newClass }}"
+  class="flex justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm  {{ primary || primary == undefined ? 'bg-blue-600 text-white hover:bg-blue-500' : 'bg-white ring-1 ring-inset ring-gray-300 text-gray-900 dark:bg-slate-800 dark:ring-slate-800 dark:text-slate-200 hover:bg-gray-50'}} {{ newClass }}"
   {{ $props.serializeExcept(['newClass', 'primary' ]) }}>
   {{{ await $slots.main() }}}
 </button>
