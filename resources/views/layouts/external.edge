@@ -8,11 +8,11 @@
     @entryPointScripts('app')
   </head>
   <body class="bg-white dark:bg-slate-900">
-    @include('partials/header')
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    </nav>
 
     @!section('body')
 
     @!toast()
-    @include('partials/footer')
   </body>
 </html>

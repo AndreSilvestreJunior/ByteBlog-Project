@@ -2,7 +2,6 @@
 @set('title', 'Postagem')
 
 @section('body')
-@include('partials/header')
 <div class="mx-auto max-w-7xl px-6 lg:px-8 mt-36">
   @!hero()
   <main>
@@ -136,7 +135,7 @@
             </li>
           </ul>
           <div class="">
-            @!textarea({ rows: 2, placeholder: 'Add seu comentário', name: 'comment' })
+            @!textarea({ rows: 2, placeholder: 'Add seu comentário', name: 'comment', emojis: emojis })
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@
         <label class="sr-only" for="textarea">Add seu comentário</label>
         <textarea id="textarea" value="{{ flashMessages.get(name, '') ? flashMessages.get(name, '') : '' }}"
           class="focus:outline-none text-start px-3 sm:leading-6 sm:text-sm text-gray-900 py-[.375rem] bg-transparent border-0 resize-none w-full block {{ newClass }}"
-          {{ $props.serializeExcept(['newClass']) }}></textarea>
+          {{ $props.serializeExcept(['newClass', 'emojis']) }}></textarea>
       </div>
       <div class="pr-2 pl-3 py-2 justify-between flex bottom-0 inset-x-0 absolute">
         <div class="items-center flex">
@@ -41,47 +41,23 @@
     x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
     x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 scale-100"
     x-transition:leave-end="opacity-0 scale-95"
-    class="absolute right-20 top-[5.5rem] z-10 mt-2 p-2 h-52 w-60 overflow-auto origin-top-left rounded-md bg-white dark:bg-slate-800 shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
-    <div>
+    class="absolute right-20 top-[5.5rem] z-10 mt-2 p-2 origin-top-left rounded-md bg-white dark:bg-slate-800 shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
+    <div class="mb-2">
       @!input({ id: 'emojiSearch', placeholder: 'Buscar' })
     </div>
-    <ul id="emojiList" class="py-1 grid grid-cols-8" role="none">
-    </ul>
+    <div class="h-52 w-60 overflow-auto">
+      <ul id="emojiList" class="py-1 grid grid-cols-8" role="none">
+        @each(emoji in emojis)
+          <li @click="insertEmoji" class="cursor-pointer text-base" emoji-name="{{ emoji.slug }}" >{{ emoji.character }}</li>
+        @end
+      </ul>
+    </div>
   </div>
 </div>
 <script>
-  const emojiList = document.getElementById('emojiList')
-  const emojiSearch = document.getElementById('emojiSearch')
-  const textArea = document.getElementById('textarea')
+  function insertEmoji(e) {
+    const textarea = document.getElementById('textarea')
 
-  fetch('https://emoji-api.com/emojis?access_key=7772f58eb14b5094ce2043265069269e29db375b')
-    .then(res => res.json())
-    .then(data => loadEmoji(data))
-
-  function loadEmoji(data) {
-    data.forEach(emoji => {
-      let li = document.createElement('li')
-      li.setAttribute('emoji-name', emoji.slug)
-      li.setAttribute('class', 'text-lg cursor-pointer')
-      li.textContent = emoji.character
-      emojiList.appendChild(li)
-    })
+    textarea.value += e.target.innerText
   }
-
-  function selectEmoji(e) {
-    console.log(e);
-  }
-
-  emojiSearch.addEventListener('keyup', e => {
-    let value = e.target.value
-    let emojis = document.querySelectorAll('#emojiList li')
-
-    emojis.forEach(emoji => {
-      if (emoji.getAttribute('emoji-name').toLowerCase().includes(value)) {
-        emoji.style.display = 'flex'
-      } else {
-        emoji.style.display = 'none'
-      }
-    });
-  })
 </script>
