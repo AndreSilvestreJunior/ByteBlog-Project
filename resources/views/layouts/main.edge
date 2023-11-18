@@ -7,10 +7,12 @@
     @entryPointStyles('app')
     @entryPointScripts('app')
   </head>
-  <body class="bg-white dark:bg-slate-900">
+  <body class="bg-white dark:bg-slate-900 flex flex-col justify-between">
     @include('partials/header')
 
-    @!section('body')
+    <main>
+      @!section('body')
+    </main>
 
     @!toast()
     @include('partials/footer')

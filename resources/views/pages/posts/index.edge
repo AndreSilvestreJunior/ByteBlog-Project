@@ -3,7 +3,27 @@
 
 @section('body')
 <div class="mx-auto max-w-7xl px-6 lg:px-8 mt-36">
-  @!hero()
+  <header class="flex items-end justify-between lg:max-w-none lg:mx-0 max-w-2xl mx-auto">
+    <div>
+      <div class="flex items-end gap-4 mx-auto max-w-2xl lg:mx-0">
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ capitalCase(post.title) }}</h2>
+        <span class="text-lg font-semibold ml-1 text-red-500">
+          <button class="text-base bi bi-heart-fill text-red-500"></button>
+          123
+        </span>
+        <button class="text-lg bi bi-star-fill text-yellow-500"></button>
+      </div>
+      <p class="mt-2 text-lg leading-8 text-gray-600">Descubra os Detalhes Intrigantes de {{ capitalCase(post.title) }}.
+      </p>
+    </div>
+    <time class="col-span-1 flex justify-end">
+      {{ new Date(post.createdAt).toLocaleDateString("pt-BR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      }) }}
+    </time>
+  </header>
   <main>
     <div class="py-16 max-w-7xl mx-auto">
       <div
@@ -41,76 +61,46 @@
           </div>
         </div>
         <div
-          class="xl:pt-16 xl:pb-17 xl:px-16 lg:row-end-2 lg:col-span-2 lg:row-span-2 sm:pb-14 sm:px-8 sm:rounded-lg sm:mx-0 ring-gray-900/5 dark:ring-white/5 dark:text-slate-400 ring-1 py-8 px-4 mx-4 gap-8 flex flex-col text-justify"
-          >
-
-          <div class="grid grid-cols-3">
-            <div class="col-span-2">
-              <h2 class="font-semibold text-xl dark:text-slate-200">Harmonia nas Diferenças</h2>
-            </div>
-            <time class="col-span-1 flex justify-end">
-              {{ new Date(post.createdAt).toLocaleDateString("pt-BR", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                }) }}
-            </time>
-          </div>
-          <p>Na vastidão do universo, cada estrela brilha com sua própria intensidade, criando um espetáculo celestial
-            único. Da mesma forma, na tapeçaria da vida, cada ser humano traz consigo uma mistura singular de
-            experiências, sonhos e perspectivas. É nessa diversidade que encontramos a verdadeira magia: a harmonia nas
-            diferenças.</p>
-          <p>No palco da existência, somos os atores de uma peça improvável, onde os enredos se entrelaçam em uma dança
-            constante de destinos entrelaçados. Cada pessoa, como uma nota musical única, contribui para a sinfonia da
-            humanidade. É na aceitação e celebração das diferenças que descobrimos a riqueza de nossas próprias vidas.
-          </p>
-          <p>A diversidade é a essência da evolução, a força motriz por trás da inovação e do progresso. Imagine um
-            jardim onde todas as flores são iguais - a beleza seria limitada e monótona. Da mesma forma, a sociedade
-            floresce quando permite que cada indivíduo contribua com suas cores únicas para o panorama coletivo.</p>
-          <p>No entanto, alcançar a verdadeira harmonia nas diferenças não é tarefa fácil. Requer abertura de mente,
-            empatia e a disposição de aprender com o desconhecido. É um compromisso constante de construir pontes sobre
-            os abismos que a incompreensão cria. Mas, quando conseguimos transcender as barreiras da diferença,
-            descobrimos que, no fundo, todos compartilhamos anseios semelhantes por amor, pertencimento e significado.
-          </p>
-          <p>A harmonia nas diferenças não é a uniformidade, mas sim a celebração da unicidade de cada ser. É a melodia
-            que surge quando reconhecemos e valorizamos as histórias que cada pessoa traz consigo. Nesse entendimento,
-            encontramos não apenas tolerância, mas verdadeira aceitação.</p>
-          <p>Portanto, vamos cultivar um mundo onde a diversidade seja não apenas aceita, mas abraçada. Que possamos
-            aprender uns com os outros, crescer juntos e criar uma sinfonia magnífica que ressoe através das gerações.
-            Pois, no final das contas, é na riqueza de nossas diferenças que encontramos a verdadeira essência da vida.
-          </p>
+          class="xl:pt-16 xl:pb-17 xl:px-16 lg:row-end-2 lg:col-span-2 lg:row-span-2 sm:pb-14 sm:px-8 sm:rounded-lg sm:mx-0 ring-gray-900/5 dark:ring-white/5 dark:text-slate-400 ring-1 py-8 px-4 mx-4 gap-8 flex flex-col text-justify">
+          {{ nl2br(e(post.content)) }}
         </div>
         <div class="lg:col-start-3">
           <h2 class="text-gray-900 leading-6 font-semibold text-sm">Comentários</h2>
           <ul class="mt-6">
-            <li class="flex relative gap-x-4">
+            @each(comment in comments)
+            <li class="flex relative gap-x-4 mt-2">
               <div class="justify-center flex absolute -bottom-6 left-0 top-0 w-6">
                 <div class="w-[1px] bg-gray-200"></div>
               </div>
-              <img class="bg-gray-50 rounded-full flex-none w-8 h-8 relative" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+              <img class="bg-gray-50 rounded-full flex-none -left-1 w-8 h-8 relative"
+                src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                alt="">
               <div class="ring-gray-200 ring-inset ring-1 p-3 rounded-md flex-auto">
                 <div class="gap-x-4 justify-between flex">
                   <div class="text-gray-500 leading-5 text-xs py-[.125rem]">
-                    <span class="text-gray-900 font-medium">Chelsea Hagon</span>
+                    <span class="text-gray-900 font-medium">{{ comment.user.name }} {{ comment.user.lastName }}</span>
                     comentou
                   </div>
                   <time class="text-gray-500 leading-5 text-xs flex-none py-[.125rem]">
-                    2d ago
+                    {{ prettyTime(comment.createdAt) }}
                   </time>
                 </div>
-                <p class="text-gray-900 leading-6 text-sm">Called client, they reassured me the invoice would be paid by the 25th.</p>
+                <p class="text-gray-900 leading-6 text-sm">{{ comment.content }}</p>
                 <div class="flex justify-between">
                   <button class="text-xs text-blue-500 font-semibold">Responder</button>
                   <a href="">
                     <i class="bi bi-heart"></i>
                   </a>
                 </div>
-                <ul class="mt-6">
+                <ul class="{{ comment.reply &&  mt-6 }}">
+                  @each(reply in comment.reply)
                   <li class="flex relative gap-x-4">
                     <div class="justify-center flex absolute -bottom-6 left-0 top-0 w-6">
                       <div class="w-[1px] bg-gray-200"></div>
                     </div>
-                    <img class="bg-gray-50 rounded-full flex-none w-6 h-6 relative" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                    <img class="bg-gray-50 rounded-full flex-none w-6 h-6 relative"
+                      src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      alt="">
                     <div class="rounded-md flex-auto">
                       <div class="gap-x-4 justify-between flex">
                         <div class="text-gray-500 leading-5 text-xs py-[.125rem]">
@@ -121,7 +111,8 @@
                           2d ago
                         </time>
                       </div>
-                      <p class="text-gray-900 leading-6 text-sm">Called client, they reassured me the invoice would be paid by the 25th.</p>
+                      <p class="text-gray-900 leading-6 text-sm">Called client, they reassured me the invoice would be
+                        paid by the 25th.</p>
                       <div class="flex justify-between">
                         <button class="text-xs text-blue-500 font-semibold">Responder</button>
                         <a href="">
@@ -130,12 +121,16 @@
                       </div>
                     </div>
                   </li>
+                  @end
                 </ul>
               </div>
             </li>
+            @end
           </ul>
           <div class="">
-            @!textarea({ rows: 2, placeholder: 'Add seu comentário', name: 'comment', emojis: emojis })
+            <form action="{{ route('posts.comments.create', { id: post.id }) }}" method="POST">
+              @!textarea({ rows: 2, placeholder: 'Add seu comentário', name: 'comment', emojis: emojis })
+            </form>
           </div>
         </div>
       </div>

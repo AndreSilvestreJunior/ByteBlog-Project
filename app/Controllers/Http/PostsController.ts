@@ -3,24 +3,24 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Post from 'App/Models/Post'
 import CreatePostValidator from 'App/Validators/CreatePostValidator'
 import Favorite from 'App/Models/Favorite'
-import EmojiService from 'App/Services/EmojiService'
+import fs from 'fs'
+import Comment from 'App/Models/Comment'
 
 export default class PostsController {
-  constructor(
-    private toastService: ToastService,
-    private emojiService: EmojiService
-  ) {
+  constructor(private toastService: ToastService) {
     this.toastService = new ToastService()
-    this.emojiService = new EmojiService()
   }
 
   public async index({ view, params }: HttpContextContract) {
     const post = await Post.findOrFail(params.id)
-    const emojis = await this.emojiService.loadEmoji()
+    const file = fs.readFileSync('resources/emojis/emojis.json', 'utf-8')
+
+    const emojis = JSON.parse(file)
 
     await post.load('creatorUser')
+    const comments = await post.related('comments').query().preload('user')
 
-    return view.render('pages/posts/index', { post, emojis })
+    return view.render('pages/posts/index', { post, comments, emojis })
   }
 
   public async favorite({ view, auth }: HttpContextContract) {
@@ -49,8 +49,13 @@ export default class PostsController {
     let posts
 
     if (params.id)
-      posts = await Post.query().where('creatorUserId', params.id).preload('creatorUser')
-    else posts = await Post.query().preload('creatorUser')
+      posts = await Post.query()
+        .where('creatorUserId', params.id)
+        .preload('creatorUser')
+        .withCount('comments')
+    else {
+      posts = await Post.query().preload('creatorUser').withCount('comments')
+    }
 
     return view.render('pages/posts/myShow', { posts })
   }

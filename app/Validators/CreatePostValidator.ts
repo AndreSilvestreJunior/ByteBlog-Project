@@ -9,7 +9,7 @@ export default class CreatePostValidator extends BaseValidator {
 
   public schema = schema.create({
     title: schema.string([rules.minLength(5), rules.maxLength(200), rules.trim()]),
-    content: schema.string([rules.minLength(5), rules.maxLength(200), rules.trim()]),
+    content: schema.string([rules.minLength(5), rules.trim()]),
   })
 
   public messages: CustomMessages = {

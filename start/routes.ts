@@ -19,9 +19,12 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import Post from 'App/Models/Post'
 
 Route.get('/', async ({ view }) => {
-  return view.render('welcome')
+  const posts = await Post.query().preload('creatorUser').withCount('comments')
+
+  return view.render('welcome', { posts })
 })
   .as('welcome')
   .middleware('silentAuth')
@@ -41,12 +44,19 @@ Route.group(() => {
 })
   .prefix('/users')
   .as('users')
+
 Route.group(() => {
   Route.get('/', 'PostsController.show').as('show')
   Route.get('/favorite', 'PostsController.favorite').as('favorite')
   Route.get('/:id', 'PostsController.index').as('index')
   Route.get('/my_posts/:id', 'PostsController.show').as('myShow')
   Route.post('/', 'PostsController.store').as('store')
+
+  Route.group(() => {
+    Route.post('/:id', 'CommentsController.create').as('create')
+  })
+    .prefix('/comments')
+    .as('comments')
 })
   .prefix('/posts')
   .as('posts')
