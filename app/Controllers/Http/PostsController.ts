@@ -2,9 +2,8 @@ import ToastService from 'App/Services/ToastService'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Post from 'App/Models/Post'
 import CreatePostValidator from 'App/Validators/CreatePostValidator'
-import Favorite from 'App/Models/Favorite'
 import fs from 'fs'
-import Comment from 'App/Models/Comment'
+import User from 'App/Models/User'
 
 export default class PostsController {
   constructor(private toastService: ToastService) {
@@ -18,6 +17,7 @@ export default class PostsController {
     const emojis = JSON.parse(file)
 
     await post.load('creatorUser')
+    await post.loadCount('usersLike')
     const comments = await post.related('comments').query().preload('user')
 
     return view.render('pages/posts/index', { post, comments, emojis })
@@ -25,8 +25,48 @@ export default class PostsController {
 
   public async favorite({ view, auth }: HttpContextContract) {
     if (auth.user?.id) {
-      const posts = await Favorite.query().where('userId', auth.user.id).preload('posts')
-      return view.render('pages/posts/favorite', { posts })
+      const user = await User.query()
+        .where('id', auth.user.id)
+        .preload('favorites', (favoritesQuery) => {
+          favoritesQuery.withCount('usersLike').preload('creatorUser')
+        })
+        .firstOrFail()
+
+      return view.render('pages/posts/favorite', { posts: user.favorites })
+    }
+  }
+
+  public async createFavorite({ params, auth }: HttpContextContract) {
+    const post = await Post.findOrFail(params.id)
+    if (auth.user?.id) {
+      const user = await User.findOrFail(auth.user.id)
+
+      if (await post.favorited(user)) {
+        await user.related('favorites').detach([post.id])
+
+        return { favorited: false }
+      } else {
+        await user.related('favorites').attach([post.id])
+
+        return { favorited: true }
+      }
+    }
+  }
+
+  public async like({ params, auth }: HttpContextContract) {
+    const post = await Post.findOrFail(params.id)
+    if (auth.user?.id) {
+      const user = await User.findOrFail(auth.user.id)
+
+      if (await post.liked(user)) {
+        await user.related('postsLike').detach([post.id])
+
+        return { liked: false }
+      } else {
+        await user.related('postsLike').attach([post.id])
+
+        return { liked: true }
+      }
     }
   }
 
@@ -53,8 +93,9 @@ export default class PostsController {
         .where('creatorUserId', params.id)
         .preload('creatorUser')
         .withCount('comments')
+        .withCount('usersLike')
     else {
-      posts = await Post.query().preload('creatorUser').withCount('comments')
+      posts = await Post.query().preload('creatorUser').withCount('comments').withCount('usersLike')
     }
 
     return view.render('pages/posts/myShow', { posts })

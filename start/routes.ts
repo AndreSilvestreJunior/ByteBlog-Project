@@ -22,7 +22,10 @@ import Route from '@ioc:Adonis/Core/Route'
 import Post from 'App/Models/Post'
 
 Route.get('/', async ({ view }) => {
-  const posts = await Post.query().preload('creatorUser').withCount('comments')
+  const posts = await Post.query()
+    .preload('creatorUser')
+    .withCount('comments')
+    .withCount('usersLike')
 
   return view.render('welcome', { posts })
 })
@@ -46,18 +49,22 @@ Route.group(() => {
   .as('users')
 
 Route.group(() => {
-  Route.get('/', 'PostsController.show').as('show')
-  Route.get('/favorite', 'PostsController.favorite').as('favorite')
-  Route.get('/:id', 'PostsController.index').as('index')
-  Route.get('/my_posts/:id', 'PostsController.show').as('myShow')
-  Route.post('/', 'PostsController.store').as('store')
+  Route.get('/', 'PostsController.show').as('show').middleware('auth')
+  Route.get('/favorite', 'PostsController.favorite').as('favorite').middleware('auth')
+  Route.get('/favorite/:id', 'PostsController.createFavorite')
+    .as('favorite.create')
+    .middleware('auth')
+  Route.get('/like/:id', 'PostsController.like').as('like').middleware('auth')
+  Route.get('/:id', 'PostsController.index').as('index').middleware('silentAuth')
+  Route.get('/my_posts/:id', 'PostsController.show').as('myShow').middleware('auth')
+  Route.post('/', 'PostsController.store').as('store').middleware('auth')
 
   Route.group(() => {
     Route.post('/:id', 'CommentsController.create').as('create')
   })
     .prefix('/comments')
     .as('comments')
+    .middleware('auth')
 })
   .prefix('/posts')
   .as('posts')
-  .middleware('auth')

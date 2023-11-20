@@ -9,7 +9,7 @@
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ capitalCase(post.title) }}</h2>
         <span class="text-lg font-semibold ml-1 text-red-500">
           <button class="text-base bi bi-heart-fill text-red-500"></button>
-          123
+          {{ post.$extras.usersLike_count }}
         </span>
         <button class="text-lg bi bi-star-fill text-yellow-500"></button>
       </div>
@@ -128,9 +128,11 @@
             @end
           </ul>
           <div class="">
+            @if(auth.isAuthenticated)
             <form action="{{ route('posts.comments.create', { id: post.id }) }}" method="POST">
               @!textarea({ rows: 2, placeholder: 'Add seu comentário', name: 'comment', emojis: emojis })
             </form>
+            @end
           </div>
         </div>
       </div>

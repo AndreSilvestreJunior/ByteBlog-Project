@@ -44,35 +44,65 @@
         </div>
       </div>
       <div class="mr-5 flex items-center">
-        <i id="heart-{{ post.id }}" onclick="teste('heart-{{ post.id }}')"
-          onmouseenter="changeIconOnHover(true, 'heart', {{ post.id }})"
-          onmouseleave="changeIconOnHover(false, 'heart', {{ post.id }})"
-          class="position relative top-[.08rem] bi bi-heart ml-1 hover:text-red-500 cursor-pointer"></i>
-        <span class="text-xs ml-1">113</span>
-        <a href="{{ route('posts.index', { id: post.id }) }}" class="bi bi-chat ml-1 hover:text-blue-500 cursor-pointer"></a>
+        @if(auth.isAuthenticated)
+        <i id="heart-{{ post.id }}" @click="like('{{ route('posts.like', { id: post.id }) }}')"
+          class="position relative top-[.08rem] bi {{ await post.liked(auth.user) ? 'bi-heart-fill text-red-400' : 'bi-heart' }} ml-1 hover:text-red-500 cursor-pointer"></i>
+        <span id="heart-count" class="text-xs ml-1" x-show="{{ post.$extras.usersLike_count }}">{{
+          post.$extras.usersLike_count }}</span>
+        <i id="star-{{ post.id }}" @click="favorite('{{ route('posts.favorite.create', { id: post.id }) }}')"
+          class="bi {{ await post.favorited(auth.user) ? 'bi-star-fill text-yellow-400' : 'bi-star' }} ml-1 hover:text-yellow-400 cursor-pointer"></i>
+        @end
+        <a href="{{ route('posts.index', { id: post.id }) }}"
+          class="bi bi-chat ml-1 hover:text-blue-500 cursor-pointer"></a>
         <span class="text-xs ml-1" x-show="{{ post.$extras.comments_count }}">{{ post.$extras.comments_count }}</span>
-        <i id="star-{{ post.id }}" onclick="teste('star-{{ post.id }}')"
-          onmouseenter="changeIconOnHover(true, 'star', {{ post.id }})"
-          onmouseleave="changeIconOnHover(false, 'star', {{ post.id }})"
-          class="bi bi-star ml-1 hover:text-yellow-400 cursor-pointer"></i>
       </div>
     </div>
   </div>
 </article>
 <script>
-  function changeIconOnHover(isEnter, type, id) {
-    const heartElement = document.getElementById(`${type}-${id}`)
-    if(isEnter) {
-      heartElement.classList.remove(`bi-${type}`)
-      heartElement.classList.add(`bi-${type}-fill`)
-    }
-    else {
-      heartElement.classList.remove(`bi-${type}-fill`)
-      heartElement.classList.add(`bi-${type}`)
+  async function favorite(url) {
+    const response = await fetch(url)
+    const data = await response.json()
+    const favoriteButton = document.getElementById('star-{{ post.id }}')
+
+    animation('star-{{ post.id }}')
+
+    if (data.favorited) {
+      favoriteButton.classList.remove('bi-star')
+      favoriteButton.classList.add('bi-star-fill')
+      favoriteButton.classList.add('text-yellow-400')
+    } else {
+      favoriteButton.classList.remove('bi-star-fill')
+      favoriteButton.classList.add('bi-star')
+      favoriteButton.classList.remove('text-yellow-400')
     }
   }
 
-  function teste(id) {
+  async function like(url) {
+    const response = await fetch(url)
+    const data = await response.json()
+    const likeButton = document.getElementById('heart-{{ post.id }}')
+    const heartCount = document.getElementById('heart-count')
+
+    animation('heart-{{ post.id }}')
+
+    if (data.liked) {
+      likeButton.classList.remove('bi-heart')
+      likeButton.classList.add('bi-heart-fill')
+      likeButton.classList.add('text-red-400')
+      heartCount.style.display = 'block'
+      heartCount.innerHTML = Number(heartCount.innerHTML) + 1
+    } else {
+      likeButton.classList.remove('bi-heart-fill')
+      likeButton.classList.add('bi-heart')
+      likeButton.classList.remove('text-red-400')
+      heartCount.innerHTML = Number(heartCount.innerHTML) - 1
+      if (heartCount.innerHTML == '0')
+        heartCount.style.display = 'none'
+    }
+  }
+
+  function animation(id) {
     const heartElement = document.getElementById(id)
     heartElement.classList.add('animate-likeAnimation')
     setTimeout(function () {
