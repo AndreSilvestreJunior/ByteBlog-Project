@@ -55,12 +55,30 @@ Route.group(() => {
     .as('favorite.create')
     .middleware('auth')
   Route.get('/like/:id', 'PostsController.like').as('like').middleware('auth')
-  Route.get('/:id', 'PostsController.index').as('index').middleware('silentAuth')
+  Route.get('/:id', 'PostsController.index')
+    .as('index')
+    .middleware('silentAuth')
+    .middleware(({ view }, next) => {
+      view.share({
+        reply: false,
+      })
+
+      return next()
+    })
   Route.get('/my_posts/:id', 'PostsController.show').as('myShow').middleware('auth')
   Route.post('/', 'PostsController.store').as('store').middleware('auth')
 
   Route.group(() => {
-    Route.post('/:id', 'CommentsController.create').as('create')
+    Route.get('/like/:id', 'PostsController.commentLike').as('like')
+    Route.post('/:id', 'PostsController.comment').as('create')
+
+    Route.group(() => {
+      Route.get('/like/:id', 'PostsController.replyLike').as('like')
+      Route.post('/:id', 'PostsController.reply').as('create')
+    })
+      .prefix('/replies')
+      .as('replies')
+      .middleware('auth')
   })
     .prefix('/comments')
     .as('comments')

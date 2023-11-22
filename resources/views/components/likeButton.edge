@@ -1,0 +1,50 @@
+@if(auth.isAuthenticated)
+<div class="flex items-center">
+  <button type="button" @click="like('{{ route(url, { id: data.id }) }}', '{{ type }}', {{ data.id }})" id="heart-{{ type }}-{{ data.id }}"
+    class="position relative top-[.08rem] bi {{ await data.liked(auth.user) ? 'bi-heart-fill text-red-400' : 'bi-heart' }} ml-1 hover:text-red-500 cursor-pointer"></button>
+  <span id="heart-{{ type }}-count-{{ data.id }}" class="text-xs ml-1" x-show="{{ data.$extras.usersLike_count }}">{{
+    data.$extras.usersLike_count }}</span>
+</div>
+@else
+<div class="flex justify-end">
+  <div class="flex items-center">
+    <button type="button"
+      class="position relative top-[.08rem] bi bi-heart-fill text-red-400 ml-1 cursor-default"></button>
+    <span class="text-xs ml-1" x-show="{{ data.$extras.usersLike_count }}">{{
+      data.$extras.usersLike_count }}</span>
+  </div>
+@end
+<script>
+  async function like(url, type, id) {
+    console.log()
+    const response = await fetch(url)
+    const data = await response.json()
+    const likeButton = document.getElementById(`heart-${ type }-${ id }`)
+    const heartCount = document.getElementById(`heart-${ type }-count-${ id }`)
+
+    animation(`heart-${ type }-${ id }`)
+
+    if (data.liked) {
+      likeButton.classList.remove('bi-heart')
+      likeButton.classList.add('bi-heart-fill')
+      likeButton.classList.add('text-red-400')
+      heartCount.style.display = 'block'
+      heartCount.innerHTML = Number(heartCount.innerHTML) + 1
+    } else {
+      likeButton.classList.remove('bi-heart-fill')
+      likeButton.classList.add('bi-heart')
+      likeButton.classList.remove('text-red-400')
+      heartCount.innerHTML = Number(heartCount.innerHTML) - 1
+      if (heartCount.innerHTML == '0')
+        heartCount.style.display = 'none'
+    }
+  }
+
+  function animation(id) {
+    const heartElement = document.getElementById(id)
+    heartElement.classList.add('animate-likeAnimation')
+    setTimeout(function () {
+      heartElement.classList.remove('animate-likeAnimation')
+    }, 900)
+  }
+</script>

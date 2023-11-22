@@ -6,7 +6,7 @@ module.exports = {
     extend: {
       keyframes: {
         slideIn: {
-          from: { transform: 'translateY(-120%)' },
+          from: { transform: 'translateY(120%)' },
           to: { transform: 'translateY(0)' },
         },
         slideOut: {

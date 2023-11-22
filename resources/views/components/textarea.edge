@@ -5,8 +5,8 @@
       alt="">
     <div class="ring-1 w-full shadow-sm rounded-lg overflow-hidden ring-inset ring-gray-300">
       <div class="pr-2 pl-3 pt-4">
-        <label class="sr-only" for="textarea">Add seu comentário</label>
-        <textarea id="textarea" @input="countCharacters" value="{{ flashMessages.get(name, '') ? flashMessages.get(name, '') : '' }}"
+        <label class="sr-only" for="textarea-{{ id }}">Add seu comentário</label>
+        <textarea id="textarea-{{ id }}" :placeholder="placeholder" @input="countCharacters" value="{{ flashMessages.get(name, '') ? flashMessages.get(name, '') : '' }}"
           class="focus:outline-none text-start px-3 sm:leading-6 sm:text-sm text-gray-900 bg-transparent border-0 resize-none w-full block {{ newClass }}"
           {{ $props.serializeExcept(['newClass', 'emojis' ]) }}></textarea>
       </div>
@@ -44,7 +44,7 @@
               </div>
             </div>
           </div>
-          <p class="text-gray-400 text-xs">Caracteres restante: <span id="countCharacter">200</span></p>
+          <p class="text-gray-400 text-xs">Caracteres restante: <span id="countCharacter-{{ id }}">200</span></p>
           @button({ primary: false, type: 'submit' })
           Comentário
           @end
@@ -55,8 +55,8 @@
 </div>
 <script>
   function insertEmoji(e) {
-    const textarea = document.getElementById('textarea')
-    const countContainer = document.getElementById('countCharacter')
+    const textarea = document.getElementById('textarea-{{ id }}')
+    const countContainer = document.getElementById('countCharacter-{{ id }}')
 
     if(textarea.value.length <= 200) {
       textarea.value += e.target.innerText
@@ -65,7 +65,7 @@
   }
 
   function countCharacters(e) {
-    const countContainer = document.getElementById('countCharacter')
+    const countContainer = document.getElementById('countCharacter-{{ id }}')
 
     if(e.target.value.length <= 200)
       countContainer.innerHTML = 200 - e.target.value.length

@@ -1,0 +1,29 @@
+<button id="star-{{ post.id }}" @click="favorite('{{ route('posts.favorite.create', { id: post.id }) }}')"
+  class="bi {{ await post.favorited(auth.user) ? 'bi-star-fill text-yellow-400' : 'bi-star' }} ml-1 hover:text-yellow-500 cursor-pointer"></button>
+<script>
+  async function favorite(url) {
+    const response = await fetch(url)
+    const data = await response.json()
+    const favoriteButton = document.getElementById('star-{{ post.id }}')
+
+    animation('star-{{ post.id }}')
+
+    if (data.favorited) {
+      favoriteButton.classList.remove('bi-star')
+      favoriteButton.classList.add('bi-star-fill')
+      favoriteButton.classList.add('text-yellow-400')
+    } else {
+      favoriteButton.classList.remove('bi-star-fill')
+      favoriteButton.classList.add('bi-star')
+      favoriteButton.classList.remove('text-yellow-400')
+    }
+  }
+
+  function animation(id) {
+    const heartElement = document.getElementById(id)
+    heartElement.classList.add('animate-likeAnimation')
+    setTimeout(function () {
+      heartElement.classList.remove('animate-likeAnimation')
+    }, 900)
+  }
+</script>

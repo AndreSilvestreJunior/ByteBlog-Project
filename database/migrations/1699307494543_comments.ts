@@ -9,7 +9,6 @@ export default class extends BaseSchema {
       table.string('content').notNullable()
       table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
       table.integer('post_id').unsigned().references('posts.id').onDelete('CASCADE')
-      table.unique(['user_id', 'post_id'])
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

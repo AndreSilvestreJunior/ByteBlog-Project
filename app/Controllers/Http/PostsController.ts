@@ -4,6 +4,8 @@ import Post from 'App/Models/Post'
 import CreatePostValidator from 'App/Validators/CreatePostValidator'
 import fs from 'fs'
 import User from 'App/Models/User'
+import Comment from 'App/Models/Comment'
+import Reply from 'App/Models/Reply'
 
 export default class PostsController {
   constructor(private toastService: ToastService) {
@@ -18,7 +20,14 @@ export default class PostsController {
 
     await post.load('creatorUser')
     await post.loadCount('usersLike')
-    const comments = await post.related('comments').query().preload('user')
+    const comments = await post
+      .related('comments')
+      .query()
+      .preload('user')
+      .preload('replies', (replyLoader) => {
+        replyLoader.preload('user').withCount('usersLike')
+      })
+      .withCount('usersLike')
 
     return view.render('pages/posts/index', { post, comments, emojis })
   }
@@ -99,6 +108,64 @@ export default class PostsController {
     }
 
     return view.render('pages/posts/myShow', { posts })
+  }
+
+  public async comment({ request, response, params, auth }: HttpContextContract) {
+    const content = request.input('content')
+    const postId = params.id
+
+    const post = await Post.findByOrFail('id', postId)
+
+    if (auth.user?.id && content)
+      await post.related('comments').create({ content, userId: auth.user?.id, postId })
+
+    response.redirect().back()
+  }
+
+  public async commentLike({ params, auth }: HttpContextContract) {
+    const comment = await Comment.findOrFail(params.id)
+    if (auth.user?.id) {
+      const user = await User.findOrFail(auth.user.id)
+
+      if (await comment.liked(user)) {
+        await comment.related('usersLike').detach([user.id])
+
+        return { liked: false }
+      } else {
+        await comment.related('usersLike').attach([user.id])
+
+        return { liked: true }
+      }
+    }
+  }
+
+  public async reply({ request, response, params, auth }: HttpContextContract) {
+    const content = request.input('content')
+    const commentId = params.id
+
+    const comment = await Comment.findByOrFail('id', commentId)
+
+    if (auth.user?.id && content)
+      await comment.related('replies').create({ content, userId: auth.user?.id, commentId })
+
+    response.redirect().back()
+  }
+
+  public async replyLike({ params, auth }: HttpContextContract) {
+    const reply = await Reply.findOrFail(params.id)
+    if (auth.user?.id) {
+      const user = await User.findOrFail(auth.user.id)
+
+      if (await reply.liked(user)) {
+        await reply.related('usersLike').detach([user.id])
+
+        return { liked: false }
+      } else {
+        await reply.related('usersLike').attach([user.id])
+
+        return { liked: true }
+      }
+    }
   }
 
   public async edit({}: HttpContextContract) {}
