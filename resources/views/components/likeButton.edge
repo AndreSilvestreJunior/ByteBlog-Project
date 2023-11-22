@@ -1,18 +1,18 @@
 @if(auth.isAuthenticated)
 <div class="flex items-center">
-  <button type="button" @click="like('{{ route(url, { id: data.id }) }}', '{{ type }}', {{ data.id }})" id="heart-{{ type }}-{{ data.id }}"
+  <button type="button" @click="like('{{ route(url, { id: data.id }) }}', '{{ type }}', {{ data.id }})"
+    id="heart-{{ type }}-{{ data.id }}"
     class="position relative top-[.08rem] bi {{ await data.liked(auth.user) ? 'bi-heart-fill text-red-400' : 'bi-heart' }} ml-1 hover:text-red-500 cursor-pointer"></button>
   <span id="heart-{{ type }}-count-{{ data.id }}" class="text-xs ml-1" x-show="{{ data.$extras.usersLike_count }}">{{
     data.$extras.usersLike_count }}</span>
 </div>
 @else
-<div class="flex justify-end">
-  <div class="flex items-center">
-    <button type="button"
-      class="position relative top-[.08rem] bi bi-heart-fill text-red-400 ml-1 cursor-default"></button>
-    <span class="text-xs ml-1" x-show="{{ data.$extras.usersLike_count }}">{{
-      data.$extras.usersLike_count }}</span>
-  </div>
+<div class="flex items-center">
+  <button type="button"
+    class="position relative top-[.08rem] bi bi-heart-fill text-red-400 ml-1 cursor-default"></button>
+  <span class="text-xs ml-1" x-show="{{ data.$extras.usersLike_count }}">{{
+    data.$extras.usersLike_count }}</span>
+</div>
 @end
 <script>
   async function like(url, type, id) {
