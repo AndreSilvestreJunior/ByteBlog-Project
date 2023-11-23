@@ -65,7 +65,8 @@
           class="xl:pt-16 xl:pb-17 xl:px-16 lg:row-end-2 lg:col-span-2 lg:row-span-2 sm:pb-14 sm:px-8 sm:rounded-lg sm:mx-0 ring-gray-900/5 dark:ring-white/5 dark:text-slate-400 ring-1 py-8 px-4 mx-4 gap-8 flex flex-col text-justify">
           {{ nl2br(e(post.content)) }}
         </div>
-        <div class="lg:col-start-3" x-data="{ reply: false, placeholder: 'Add seu comentário', commentId: 0, toggleReply(placeholder, commentId) { this.reply = !this.reply; this.placeholder = placeholder; this.commentId = commentId } }">
+        <div class="lg:col-start-3"
+          x-data="{ reply: false, placeholder: 'Add seu comentário', commentId: 0, toggleReply(placeholder, commentId) { this.reply = !this.reply; this.placeholder = placeholder; this.commentId = commentId }, disableReply() { this.reply = false; this.placeholder = 'Add seu comentário' } }">
           <h2 class="text-gray-900 leading-6 font-semibold text-sm">Comentários</h2>
           <ul class="mt-6">
             @each(comment in comments)
@@ -74,12 +75,12 @@
           </ul>
           <div class="">
             @if(auth.isAuthenticated)
-              <form x-show="!reply" action="{{ route('posts.comments.create', { id: post.id }) }}" method="POST">
-                @!textarea({ id: 1, rows: 2, name: 'content', emojis: emojis })
-              </form>
-              <form x-show="reply" @submit.prevent="onSubmit" method="POST">
-                @!textarea({ id: 2, rows: 2, name: 'content', emojis: emojis })
-              </form>
+            <form x-show="!reply" action="{{ route('posts.comments.create', { id: post.id }) }}" method="POST">
+              @!textarea({ id: 1, rows: 2, name: 'content', emojis: emojis })
+            </form>
+            <form x-show="reply" @click.outside="disableReply" @submit.prevent="onSubmit" method="POST">
+              @!textarea({ id: 2, rows: 2, name: 'content', emojis: emojis })
+            </form>
             @end
           </div>
         </div>

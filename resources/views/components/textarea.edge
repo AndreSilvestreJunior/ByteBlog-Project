@@ -6,7 +6,7 @@
     <div class="ring-1 w-full shadow-sm rounded-lg overflow-hidden ring-inset ring-gray-300">
       <div class="pr-2 pl-3 pt-4">
         <label class="sr-only" for="textarea-{{ id }}">Add seu comentário</label>
-        <textarea id="textarea-{{ id }}" :placeholder="placeholder" @input="countCharacters" value="{{ flashMessages.get(name, '') ? flashMessages.get(name, '') : '' }}"
+        <textarea id="textarea-{{ id }}" :placeholder="placeholder" @input="countCharacters($el, {{ id }})" value="{{ flashMessages.get(name, '') ? flashMessages.get(name, '') : '' }}"
           class="focus:outline-none text-start px-3 sm:leading-6 sm:text-sm text-gray-900 bg-transparent border-0 resize-none w-full block {{ newClass }}"
           {{ $props.serializeExcept(['newClass', 'emojis' ]) }}></textarea>
       </div>
@@ -17,7 +17,7 @@
           class="h-36 w-full overflow-auto transition-all ease-in-out duration-300">
           <ul id="emojiList" class="py-1 grid grid-cols-12" role="none">
             @each(emoji in emojis)
-            <li @click="insertEmoji" class="cursor-pointer text-base" emoji-name="{{ emoji.description }}">{{
+            <li @click="insertEmoji($el, {{ id }})" class="cursor-pointer text-base" emoji-name="{{ emoji.description }}">{{
               emoji.emoji }}
             </li>
             @end
@@ -54,22 +54,22 @@
   </div>
 </div>
 <script>
-  function insertEmoji(e) {
-    const textarea = document.getElementById('textarea-{{ id }}')
-    const countContainer = document.getElementById('countCharacter-{{ id }}')
+  function insertEmoji(e, id) {
+    const textarea = document.getElementById(`textarea-${ id }`)
+    const countContainer = document.getElementById(`countCharacter-${ id }`)
 
     if(textarea.value.length <= 200) {
-      textarea.value += e.target.innerText
+      textarea.value += e.innerHTML.trim()
       countContainer.innerHTML = 200 - textarea.value.length
     }
   }
 
-  function countCharacters(e) {
-    const countContainer = document.getElementById('countCharacter-{{ id }}')
+  function countCharacters(e, id) {
+    const countContainer = document.getElementById(`countCharacter-${ id }`)
 
-    if(e.target.value.length <= 200)
-      countContainer.innerHTML = 200 - e.target.value.length
+    if(e.value.length <= 200)
+      countContainer.innerHTML = 200 - e.value.length
     else
-      e.target.value = e.target.value.substring(0, 200)
+      e.value = e.value.substring(0, 200)
   }
 </script>
