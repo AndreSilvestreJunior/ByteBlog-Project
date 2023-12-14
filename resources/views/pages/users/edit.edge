@@ -1,0 +1,81 @@
+@layout('layouts/main')
+@set('title', 'Perfil')
+
+@section('body')
+<div class="mx-auto max-w-7xl px-6 lg:px-8 mt-36 flex flex-col divide-y dark:divide-slate-800">
+  <div class="lg:px-8 sm:px-6 md:grid-cols-3 py-16 px-4 gap-x-10 gap-y-8 grid-cols-1 max-w-7xl grid">
+    <div>
+      <h2 class="text-gray-900 leading-7 text-base font-semibold dark:text-slate-200">Informações Pessoais</h2>
+      <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">Mantenha sempre suas informações atualizadas.
+      </p>
+    </div>
+    <form action="{{ route('users.update', { id: auth.user.id }, { qs: { _method: 'PUT' } }) }}" method="POST"
+      class="md:col-span-2">
+      <div class="grid sm:grid-cols-6 sm:max-w-xl gap-x-8 gap-y-6 grid-cols-1">
+        <div class="gap-x-8 items-center flex col-span-full">
+          <svg class="bg-gray-50 rounded-lg flex-none w-24 h-24 relative text-gray-300" fill="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z">
+            </path>
+          </svg>
+          <div>
+            @button({ primary: false })
+            Trocar Avatar
+            @end
+            <p class="leading-5 text-xs mt-2 text-gray-600 dark:text-gray-400">JPG, GIF or PNG. 1MB max.</p>
+          </div>
+        </div>
+        <div class="sm:col-span-3">
+          @!input({ label: 'Nome', required, name: 'name', value: auth.user.name })
+        </div>
+        <div class="sm:col-span-3">
+          @!input({ label: 'Sobrenome', required, name: 'lastName', value: auth.user.lastName })
+        </div>
+        <div class="sm:col-span-full">
+          @!input({ label: 'Email', placeholder: 'email@email', required, name: 'email', value: auth.user.email })
+        </div>
+        <div class="sm:col-span-full">
+          @!input({ label: 'Username', name: 'username', required, value: auth.user.username })
+        </div>
+      </div>
+      <div class="flex mt-8 justify-center sm:max-w-xl gap-2">
+        @button()
+        Salvar
+        @end
+        @button({ type: "button", '@click': "() => { history.back() }", primary: false })
+          Cancelar
+        @end
+      </div>
+    </form>
+  </div>
+  <div class="lg:px-8 sm:px-6 md:grid-cols-3 py-16 px-4 gap-x-10 gap-y-8 grid-cols-1 max-w-7xl grid">
+    <div>
+      <h2 class="text-gray-900 leading-7 text-base font-semibold dark:text-slate-200">Trocar Senha</h2>
+      <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">Atualize sua senha associada à sua conta.</p>
+    </div>
+    <form action="{{ route('users.updatePassword', { id: auth.user.id }, { qs: { _method: 'PUT' } }) }}" method="POST"
+      class="md:col-span-2">
+      <div class="grid sm:grid-cols-6 sm:max-w-xl gap-x-8 gap-y-6 grid-cols-1">
+        <div class="sm:col-span-3">
+          @!input({ label: 'Senha Atual', required, name: 'current_password' })
+        </div>
+        <div class="sm:col-span-3">
+          @!input({ label: 'Nova Senha', required, name: 'password' })
+        </div>
+        <div class="sm:col-span-full">
+          @!input({ label: 'Confirmar Senha', required, name: 'password_confirmation' })
+        </div>
+      </div>
+      <div class="flex mt-8 justify-center sm:max-w-xl gap-2">
+        @button()
+        Salvar
+        @end
+        @button({ type: "button", '@click': "() => { history.back() }", primary: false })
+          Cancelar
+        @end
+      </div>
+    </form>
+  </div>
+</div>
+@end

@@ -1,12 +1,16 @@
 <div x-data="dropdown" class="relative text-top">
   <div class="gap-x-3 flex mt-6">
-    <img class="bg-gray-50 rounded-full flex-none w-6 h-6"
-      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-      alt="">
-    <div class="ring-1 w-full shadow-sm rounded-lg overflow-hidden ring-inset ring-gray-300">
+
+    <svg class="bg-gray-50 rounded-full flex-none w-6 h-6 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+      <path
+        d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z">
+      </path>
+    </svg>
+    <div class="ring-1 w-full shadow-sm rounded-lg overflow-hidden ring-inset dark:ring-slate-700 ring-gray-300">
       <div class="pr-2 pl-3 pt-4">
         <label class="sr-only" for="textarea-{{ id }}">Add seu comentário</label>
-        <textarea id="textarea-{{ id }}" :placeholder="placeholder" @input="countCharacters($el, {{ id }})" value="{{ flashMessages.get(name, '') ? flashMessages.get(name, '') : '' }}"
+        <textarea id="textarea-{{ id }}" :placeholder="placeholder" @input="countCharacters($el, {{ id }})"
+          value="{{ flashMessages.get(name, '') ? flashMessages.get(name, '') : '' }}"
           class="focus:outline-none text-start px-3 sm:leading-6 sm:text-sm text-gray-900 bg-transparent border-0 resize-none w-full block {{ newClass }}"
           {{ $props.serializeExcept(['newClass', 'emojis' ]) }}></textarea>
       </div>
@@ -17,7 +21,8 @@
           class="h-36 w-full overflow-auto transition-all ease-in-out duration-300">
           <ul id="emojiList" class="py-1 grid grid-cols-12" role="none">
             @each(emoji in emojis)
-            <li @click="insertEmoji($el, {{ id }})" class="cursor-pointer text-base" emoji-name="{{ emoji.description }}">{{
+            <li @click="insertEmoji($el, {{ id }})" class="cursor-pointer text-base"
+              emoji-name="{{ emoji.description }}">{{
               emoji.emoji }}
             </li>
             @end

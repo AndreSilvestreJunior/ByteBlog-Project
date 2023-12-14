@@ -42,7 +42,12 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('/new', 'UsersController.create').as('create')
+  Route.get('/edit/:id', 'UsersController.edit').as('edit').middleware('auth')
   Route.get('/:id', 'UsersController.index').as('index').middleware('auth')
+  Route.put('/password/:id', 'UsersController.updatePassword')
+    .as('updatePassword')
+    .middleware('auth')
+  Route.put('/:id', 'UsersController.update').as('update').middleware('auth')
   Route.post('/', 'UsersController.store').as('store')
 })
   .prefix('/users')
@@ -66,10 +71,12 @@ Route.group(() => {
       return next()
     })
   Route.get('/my_posts/:id', 'PostsController.show').as('myShow').middleware('auth')
+  Route.delete('/:id', 'PostsController.destroy').as('destroy').middleware('auth')
   Route.post('/', 'PostsController.store').as('store').middleware('auth')
 
   Route.group(() => {
     Route.get('/like/:id', 'PostsController.commentLike').as('like')
+    Route.get('/:id', 'CommentsController.index').as('index')
     Route.post('/:id', 'PostsController.comment').as('create')
 
     Route.group(() => {

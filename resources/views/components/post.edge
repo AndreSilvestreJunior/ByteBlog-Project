@@ -7,7 +7,7 @@
   </div>
   <div class="max-w-2xl">
     <div class="flex items-center gap-x-4 text-xs mt-8">
-      <time class="text-gray-500">{{ new Date(post.createdAt).toLocaleDateString("pt-BR", {
+      <time class="dark:text-slate-300 text-gray-500">{{ new Date(post.createdAt).toLocaleDateString("pt-BR", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -16,13 +16,13 @@
         class="relative rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">Marketing</a>
     </div>
     <div class="group relative">
-      <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+      <h3 class="mt-3 text-lg font-semibold leading-6 dark:text-slate-200 text-gray-900 group-hover:text-gray-600">
         <a href="{{ route('posts.index', { id: post.id }) }}">
           <span class="absolute inset-0"></span>
           {{ post.title }}
         </a>
       </h3>
-      <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{{ post.content }}</p>
+      <p class="mt-5 line-clamp-3 text-sm leading-6 dark:text-slate-300 text-gray-600">{{ post.content }}</p>
     </div>
     <div class="w-full flex items-end justify-between mt-8">
       <div class="relative mt-8 flex items-center gap-x-4">
@@ -34,13 +34,13 @@
           </svg>
         </span>
         <div class="text-sm leading-6">
-          <p class="font-semibold text-gray-900">
+          <p class="font-semibold dark:text-slate-200 text-gray-900">
             <a href="{{ route('users.index', { id: post.creatorUserId }) }}">
               <span class="absolute inset-0"></span>
               {{ post.creatorUser.name }} {{ post.creatorUser.lastName }}
             </a>
           </p>
-          <p class="text-gray-600">Descrição</p>
+          <p class="dark:text-slate-300 text-gray-600">Descrição</p>
         </div>
       </div>
       <div class="mr-5 flex items-center">
@@ -49,8 +49,8 @@
         @!favoriteButton({ post })
         @end
         <a href="{{ route('posts.index', { id: post.id }) }}"
-          class="bi bi-chat ml-1 hover:text-blue-500 cursor-pointer"></a>
-        <span class="text-xs ml-1" x-show="{{ post.$extras.comments_count }}">{{ post.$extras.comments_count }}</span>
+          class="bi bi-chat ml-1 dark:text-slate-200 hover:text-blue-500 cursor-pointer"></a>
+        <span class="text-xs ml-1 dark:text-slate-200" x-show="{{ post.$extras.comments_count }}">{{ post.$extras.comments_count }}</span>
       </div>
     </div>
   </div>

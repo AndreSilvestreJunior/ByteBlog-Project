@@ -6,7 +6,7 @@
   <header class="flex items-end justify-between lg:max-w-none lg:mx-0 max-w-2xl mx-auto">
     <div>
       <div class="flex items-end gap-4 mx-auto max-w-2xl lg:mx-0">
-        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ capitalCase(post.title) }}</h2>
+        <h2 class="text-3xl font-bold tracking-tight dark:text-slate-200 text-gray-900 sm:text-4xl">{{ capitalCase(post.title) }}</h2>
         <div class="flex items-center">
           @!likeButton({ data: post, url: 'posts.like', type: 'post' })
           @if(auth.isAuthenticated)
@@ -14,16 +14,25 @@
           @end
         </div>
       </div>
-      <p class="mt-2 text-lg leading-8 text-gray-600">Descubra os Detalhes Intrigantes de {{ capitalCase(post.title) }}.
+      <p class="mt-2 text-lg leading-8 dark:text-slate-300 text-gray-600">Descubra os Detalhes Intrigantes de {{ capitalCase(post.title) }}.
       </p>
     </div>
-    <time class="col-span-1 flex justify-end">
-      {{ new Date(post.createdAt).toLocaleDateString("pt-BR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      }) }}
-    </time>
+    <div class="flex flex-col items-end gap-3">
+      @if(auth.isAuthenticated && auth.user.id === post.creatorUser.id)
+        <form action="{{ route('posts.destroy', { id: post.id }, { qs: { _method: 'DELETE' }}) }}" method="POST">
+          @button({ newClass: 'w-24' })
+            <i class="bi bi-trash mr-2"></i> Deletar
+          @end
+        </form>
+      @end
+      <time class="dark:text-slate-300 col-span-1 flex justify-end">
+        {{ new Date(post.createdAt).toLocaleDateString("pt-BR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        }) }}
+      </time>
+    </div>
   </header>
   <main>
     <div class="py-16 max-w-7xl mx-auto">
@@ -34,41 +43,68 @@
           <div class="ring-1 ring-gray-900/5 shadow-sm bg-gray-50 dark:bg-white/5 dark:ring-gray-700 rounded-lg">
             <dl class="flex flex-wrap">
               <div class="pt-6 pl-6 flex-auto">
-                <dt class="text-gray-900 dark:text-slate-200 leading-6 font-semibold text-sm">
+                <dt class="text-gray-900 dark:text-slate-200 leading-6 font-semibold text-sm pb-2">
                   Criador da Postagem
                 </dt>
-                <dd class="text-gray-900 dark:text-slate-200 leading-6 font-semibold mt-1">
-                  R$10,560.00
+                <dd class="text-gray-900 dark:text-slate-200 leading-6 font-semibold mt-1 flex items-center gap-2">
+                  <span class="bg-gray-100 rounded-full overflow-hidden w-14 h-14 inline-block">
+                    <svg class="w-full text-gray-300 h-full" fill="currentColor" viewBox="0 0 24 24">
+                      <path
+                        d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z">
+                      </path>
+                    </svg>
+                  </span>
+                  <div>
+                    <span>{{ post.creatorUser.name }} {{ post.creatorUser.lastName }}</span>
+                    <p class="text-xs">Descrição</p>
+                  </div>
                 </dd>
               </div>
               <div class="pt-4 px-6 self-end flex-none">
                 <dt class="sr-only">
                   Status
                 </dt>
-                <dd class="ring-1 ring-green-600 font-medium text-xs py-1 px-2 bg-green-50 rounded-md">
-                  Paid
+                <dd class="ring-1 ring-green-600 font-medium text-xs py-1 pr-2 bg-green-50 rounded-md flex items-center h-6">
+                  <i class="bi bi-plus text-lg"></i>
+                  Seguir
                 </dd>
               </div>
-              <div class="pt-6 px-6 border-t border-gray-900/5 dark:border-white/5 gap-x-4 flex-none w-full flex mt-6">
-                <dt></dt>
-                <dd>{{ post.creatorUser.name }} {{ post.creatorUser.lastName }}</dd>
+              <div class="pt-6 px-6 border-t border-gray-900/5 dark:text-slate-200 dark:border-white/5 gap-x-2 flex-none w-full items-center flex mt-6">
+                <i class="bi bi-people text-lg"></i>
+                <dt class="flex-none text-sm font-semibold">Seguidores:</dt>
+                <dd class="leading-6 font-medium text-sm">200</dd>
               </div>
-              <div></div>
-              <div></div>
+              <div class="px-6 gap-x-2 flex-none w-full flex items-center mt-2 dark:text-slate-200">
+                <i class="bi bi-postcard text-lg"></i>
+                <dt class="flex-none text-sm font-semibold">Postagens:</dt>
+                <dd class="leading-6 font-medium text-sm">30</dd>
+              </div>
+              <div class="px-6 gap-x-2 flex-none w-full dark:text-slate-200 flex items-center mt-2 mb-6">
+                <dt class="flex-none text-sm font-semibold"><i class="bi bi-heart-fill text-red-400"></i></dt>
+                <dd class="leading-6 font-medium text-sm">200</dd>
+              </div>
             </dl>
-          </div>
-          <div>
-
           </div>
         </div>
         <div
-          class="xl:pt-16 xl:pb-17 xl:px-16 lg:row-end-2 lg:col-span-2 lg:row-span-2 sm:pb-14 sm:px-8 sm:rounded-lg sm:mx-0 ring-gray-900/5 dark:ring-white/5 dark:text-slate-400 ring-1 py-8 px-4 mx-4 gap-8 flex flex-col text-justify">
+          class="xl:pt-16 xl:pb-17 xl:px-16 lg:row-end-2 lg:col-span-2 lg:row-span-2 sm:pb-14 sm:px-8 sm:rounded-lg sm:mx-0 ring-gray-900/5 dark:ring-white/5 dark:text-slate-300 ring-1 py-8 px-4 mx-4 gap-8 flex flex-col text-justify">
           {{ nl2br(e(post.content)) }}
         </div>
-        <div class="lg:col-start-3"
-          x-data="{ reply: false, placeholder: 'Add seu comentário', commentId: 0, toggleReply(placeholder, commentId) { this.reply = !this.reply; this.placeholder = placeholder; this.commentId = commentId }, disableReply() { this.reply = false; this.placeholder = 'Add seu comentário' } }">
+        <div class="lg:col-start-3" x-data="{ reply: false, placeholder: 'Add seu comentário', commentId: 0,
+            toggleReply(placeholder, commentId) {
+              this.reply = !this.reply;
+              this.placeholder = placeholder;
+              this.commentId = commentId;
+              if(this.reply) {
+                const form = document.getElementById('replyForm');
+                form.action = `/posts/comments/replies/${this.commentId}`
+              }
+            }, disableReply() {
+              this.reply = false;
+              this.placeholder = 'Add seu comentário'
+            } }">
           <h2 class="text-gray-900 leading-6 font-semibold text-sm">Comentários</h2>
-          <ul class="mt-6">
+          <ul class="mt-6" x-data="initComments">
             @each(comment in comments)
             @!comment({ comment })
             @end
@@ -78,7 +114,8 @@
             <form x-show="!reply" action="{{ route('posts.comments.create', { id: post.id }) }}" method="POST">
               @!textarea({ id: 1, rows: 2, name: 'content', emojis: emojis })
             </form>
-            <form x-show="reply" @click.outside="disableReply" @submit.prevent="onSubmit" method="POST">
+            <form id="replyForm" x-show="reply" @click.outside="disableReply" action="/posts/comments/replies/"
+              method="POST">
               @!textarea({ id: 2, rows: 2, name: 'content', emojis: emojis })
             </form>
             @end
@@ -89,14 +126,55 @@
   </main>
 </div>
 <script>
-  async function onSubmit(e) {
-    const response = await fetch(`/posts/comments/replies/${this.commentId}`, {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: e.target.elements.content.value })
-    })
+  function initComments() {
+    return {
+      comments: [],
+      init() {
+        this.getComments();
+      },
+      async getComments() {
+        const response = await fetch('{{ route('posts.comments.index', { id: post.id }) }}')
 
-    location.reload()
+        const data = await response.json()
+        console.log(data.comments)
+
+        this.comments = data.comments;
+      },
+      postComment() {
+        this.comments.push(this.comments[0])
+      },
+      prettyDate(date) {
+        const dataFinal = new Date()
+
+        const milissegundosEmUmMinuto = 1000 * 60
+        const milissegundosEmUmaHora = milissegundosEmUmMinuto * 60
+        const milissegundosEmUmDia = milissegundosEmUmaHora * 24
+        const milissegundosEmUmMes = milissegundosEmUmDia * 30
+        const milissegundosEmUmAno = milissegundosEmUmDia * 365
+
+        const diferencaEmMilissegundos = dataFinal - new Date(date)
+
+        if (diferencaEmMilissegundos < milissegundosEmUmMinuto) {
+          const minutos = Math.floor(diferencaEmMilissegundos / 1000)
+          return `${minutos}s`
+        } else if (diferencaEmMilissegundos < milissegundosEmUmaHora) {
+          const minutos = Math.floor(diferencaEmMilissegundos / milissegundosEmUmMinuto)
+          return `${minutos}min`
+        } else if (diferencaEmMilissegundos < milissegundosEmUmDia) {
+          const horas = Math.floor(diferencaEmMilissegundos / milissegundosEmUmaHora)
+          return `${horas}hr`
+        } else if (diferencaEmMilissegundos < milissegundosEmUmMes) {
+          const dias = Math.floor(diferencaEmMilissegundos / milissegundosEmUmDia)
+          return `${dias}d`
+        } else if (diferencaEmMilissegundos < milissegundosEmUmAno) {
+          const meses = Math.floor(diferencaEmMilissegundos / milissegundosEmUmMes)
+          return `${meses}m`
+        } else {
+          const anos = Math.floor(diferencaEmMilissegundos / milissegundosEmUmAno)
+          return `${anos}a`
+        }
+      }
+    }
   }
 </script>
 @end

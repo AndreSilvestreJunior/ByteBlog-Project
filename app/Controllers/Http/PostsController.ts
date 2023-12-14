@@ -172,5 +172,15 @@ export default class PostsController {
 
   public async update({}: HttpContextContract) {}
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({ params, response, session, auth }: HttpContextContract) {
+    const postId = params.id
+
+    const post = await Post.findOrFail(postId)
+
+    await post.delete()
+
+    this.toastService.success(session, 'Postagem deletada!', 4000)
+
+    response.redirect().toRoute('posts.myShow', { id: auth.user?.id })
+  }
 }
