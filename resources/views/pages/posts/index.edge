@@ -104,7 +104,7 @@
               this.placeholder = 'Add seu comentário'
             } }">
           <h2 class="text-gray-900 leading-6 font-semibold text-sm">Comentários</h2>
-          <ul class="mt-6" x-data="initComments">
+          <ul class="mt-6">
             @each(comment in comments)
             @!comment({ comment })
             @end
@@ -136,7 +136,6 @@
         const response = await fetch('{{ route('posts.comments.index', { id: post.id }) }}')
 
         const data = await response.json()
-        console.log(data.comments)
 
         this.comments = data.comments;
       },

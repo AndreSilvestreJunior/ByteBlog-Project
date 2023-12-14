@@ -12,12 +12,17 @@
     </div>
     <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
       <div class="text-center">
-        <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-slate-200 sm:text-6xl">Bem-vindo ao ByteBlog!</h1>
-        <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-slate-400">Desperte sua Paixão pela Tecnologia. Registre-se Agora e Faça Parte da Jornada onde os Bits se Transformam em Conhecimento. Compartilhe, Aprenda e Explore o Universo Digital no ByteBlog.</p>
-        <div class="mt-10 flex items-center justify-center gap-x-6">
-          <a href="{{ route('users.create') }}"
-            class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Registre-se Agora</a>
-        </div>
+        @if(auth.isAuthenticated)
+          <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-slate-200 sm:text-6xl">Bem-vindo ao ByteBlog!</h1>
+          <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-slate-400">Desperte sua Paixão pela Tecnologia. Crie Agora e Faça Parte da Jornada onde os Bits se Transformam em Conhecimento. Compartilhe, Aprenda e Explore o Universo Digital no ByteBlog.</p>
+        @else
+          <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-slate-200 sm:text-6xl">Bem-vindo ao ByteBlog!</h1>
+          <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-slate-400">Desperte sua Paixão pela Tecnologia. Registre-se Agora e Faça Parte da Jornada onde os Bits se Transformam em Conhecimento. Compartilhe, Aprenda e Explore o Universo Digital no ByteBlog.</p>
+          <div class="mt-10 flex items-center justify-center gap-x-6">
+            <a href="{{ route('users.create') }}"
+              class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Registre-se Agora</a>
+          </div>
+        @end
       </div>
     </div>
     <div
