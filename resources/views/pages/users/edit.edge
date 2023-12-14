@@ -57,13 +57,13 @@
     <form action="{{ route('users.updatePassword', { id: auth.user.id }, { qs: { _method: 'PUT' } }) }}" method="POST"
       class="md:col-span-2">
       <div class="grid sm:grid-cols-6 sm:max-w-xl gap-x-8 gap-y-6 grid-cols-1">
-        <div class="sm:col-span-3">
+        <div class="sm:col-span-full">
           @!input({ label: 'Senha Atual', required, name: 'current_password' })
         </div>
         <div class="sm:col-span-3">
           @!input({ label: 'Nova Senha', required, name: 'password' })
         </div>
-        <div class="sm:col-span-full">
+        <div class="sm:col-span-3">
           @!input({ label: 'Confirmar Senha', required, name: 'password_confirmation' })
         </div>
       </div>
