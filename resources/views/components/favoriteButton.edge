@@ -1,12 +1,12 @@
-<button id="star-{{ post.id }}" @click="favorite('{{ route('posts.favorite.create', { id: post.id }) }}')"
+<button id="star-{{ post.id }}" @click="favorite('{{ route('posts.favorite.create', { id: post.id }) }}', {{ post.id }})"
   class="bi {{ await post.favorited(auth.user) ? 'bi-star-fill text-yellow-400' : 'bi-star' }} ml-1 hover:text-yellow-500 cursor-pointer"></button>
 <script>
-  async function favorite(url) {
+  async function favorite(url, id) {
     const response = await fetch(url)
     const data = await response.json()
-    const favoriteButton = document.getElementById('star-{{ post.id }}')
+    const favoriteButton = document.getElementById(`star-${id}`)
 
-    animation('star-{{ post.id }}')
+    animation(`star-${id}`)
 
     if (data.favorited) {
       favoriteButton.classList.remove('bi-star')
