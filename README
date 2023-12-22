@@ -1,0 +1,35 @@
+# Blog Project
+
+Este é um projeto de blog construído com AdonisJS, TypeScript, Tailwind CSS, SSR (Server-Side Rendering) e Alpine.js.
+
+## Funcionalidades
+
+- Criação de usuário
+- Login
+- Autenticação
+- Permissões de usuário
+- Criação de post
+- Comentários em posts
+- Respostas a comentários
+- Telas responsivas
+
+## Tecnologias Utilizadas
+
+- [AdonisJS](https://adonisjs.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Alpine.js](https://alpinejs.dev/)
+
+## Requisitos do Sistema
+
+- Node.js
+- Npm ou Yarn
+- Banco de dados (por exemplo, PostgreSQL, MySQL)
+
+## Configuração
+
+1. Clone o repositório:
+
+   ```bash
+   git clone https://github.com/seu-usuario/blog-project.git
+   cd blog-project
