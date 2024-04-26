@@ -16,3 +16,6 @@ Este é um projeto de blog construído com AdonisJS, TypeScript, Tailwind CSS, S
 ## Tecnologias Utilizadas
 
 [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/adonisjs/adonisjs-original.svg" width="40" height="40" />](https://adonisjs.com/)  [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" width="40" height="40" />](https://www.typescriptlang.org/)  [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" width="40" height="40" />](https://tailwindcss.com/)  [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/alpinejs/alpinejs-original.svg" width="40" height="40" />](https://alpinejs.dev/)
+
+## Tecnologias Utilizadas
+<p style="color: yellow" >Em construção</p>
